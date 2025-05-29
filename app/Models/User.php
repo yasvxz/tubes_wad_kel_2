@@ -2,47 +2,62 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // Nama tabel (optional jika default)
+    protected $table = 'users';
+
+    // Primary key
+    protected $primaryKey = 'user_id';
+
+    // Primary key bukan UUID
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    // Aktifkan timestamps (created_at dan updated_at)
+    public $timestamps = true;
+
+    // Kolom yang bisa diisi secara massal
     protected $fillable = [
-        'name',
-        'email',
+        'nama',
+        'nim',
+        'username_sso',
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    // Kolom yang disembunyikan saat serialisasi (misalnya saat return JSON)
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Kolom yang dikonversi ke tipe tertentu
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    // Relasi ke admin (jika user juga adalah admin)
+    public function admin()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Admin::class, 'user_id', 'user_id');
+    }
+
+    // Relasi ke peminjaman
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'user_id', 'user_id');
+    }
+
+    // Relasi ke feedback
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'user_id', 'user_id');
     }
 }

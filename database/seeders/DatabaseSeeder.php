@@ -20,4 +20,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
     }
+
+    public function getSeeders(): array
+    {
+        return [
+            UserSeeder::class,
+            // Tambahkan seeder lain jika diperlukan
+        ];
+    }
 }
