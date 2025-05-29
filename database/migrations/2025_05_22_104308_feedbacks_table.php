@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id('feedback_id');
             $table->unsignedBigInteger('peminjaman_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('title');
             $table->text('keluhan');
+            $table->text('attachment')->nullable();
             $table->timestamp('tanggal_dibuat')->useCurrent();
             $table->timestamps();
 
