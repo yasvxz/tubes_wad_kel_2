@@ -13,7 +13,7 @@ class FeedbackController extends Controller
     public function index()
     {
         $complaints = Feedback::where('user_id','peminjaman_id', Auth::id())->get();
-        return view('feedback.index', compact('feedbacks'));
+        return view('feedback.index', compact('feedback'));
     }
 
     // Form buat keluhan
