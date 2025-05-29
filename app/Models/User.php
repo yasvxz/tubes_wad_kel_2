@@ -11,13 +11,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    protected $primaryKey = 'user_id'; // karena bukan 'id'
+    protected $primaryKey = 'user_id';
 
     protected $fillable = [
         'nama',
         'nim',
         'username_sso',
         'password',
+        'role',
     ];
 
     protected $hidden = [
