@@ -6,24 +6,18 @@ use App\Models\Feedback;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class FeedbackController extends Controller
 {
-    // User melihat daftar keluhan miliknya
     
     public function index()
     {
-        $complaints = Feedback::where('user_id','peminjaman_id', Auth::id())->get();
         $feedbacks = Feedback::with(['user', 'peminjaman'])->get();
         return view('feedback.index', compact('feedbacks'));
     }
 
-    // Form buat keluhan
-    public function create()
     public function create($peminjaman_id)
     {
-        return view('feedbacks.create');
         $peminjaman = Peminjaman::findOrFail($peminjaman_id);
         return view('feedbacks.create', compact('peminjaman'));
     }
