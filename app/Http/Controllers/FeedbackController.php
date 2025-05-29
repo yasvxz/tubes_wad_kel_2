@@ -22,12 +22,10 @@ class FeedbackController extends Controller
         return view('feedbacks.create', compact('peminjaman'));
     }
 
-    // Simpan keluhan
 
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:255',
             'peminjaman_id' => 'required|exists:peminjamans,peminjaman_id',
             'keluhan' => 'required',
             'attachment' => 'nullable|file|max:2048'
@@ -38,11 +36,9 @@ class FeedbackController extends Controller
             $attachmentPath = $request->file('attachment')->store('feedbacks');
         }
 
-        Complaint::create([
         Feedback::create([
             'user_id' => Auth::id(),
             'peminjaman_id' => Auth::id(),
-            'title' => $request->title,
             'judul' => $request->title,
             'keluhan' => $request->description,
             'attachment' => $attachmentPath
