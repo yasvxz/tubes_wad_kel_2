@@ -10,18 +10,20 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('ruangans', function (Blueprint $table) {
-            $table->id('ruangan_id');
-            $table->unsignedBigInteger('gedung_id');
-            $table->string('nama_ruangan');
-            $table->integer('kapasitas');
-            $table->text('deskripsi')->nullable();
-            $table->boolean('tersedia')->default(true);
-            $table->timestamps();
+{
+    Schema::create('ruangans', function (Blueprint $table) {
+        $table->id('ruangan_id');
+        $table->unsignedBigInteger('gedung_id');
+        $table->string('nama_ruangan');
+        $table->integer('kapasitas');
+        $table->text('deskripsi')->nullable();
+        $table->boolean('tersedia')->default(true);
+        $table->timestamps();
 
-            $table->foreign('gedung_id')->references('gedung_id')->on('gedungs')->onDelete('cascade');
-});
+        $table->foreign('gedung_id')->references('gedung_id')->on('gedungs')->onDelete('cascade');
+    });
+
+
 
     }
 

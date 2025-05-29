@@ -12,11 +12,18 @@ class Ruangan extends Model
     protected $primaryKey = 'ruangan_id';
 
     protected $fillable = [
+
+        'gedung_id',
         'nama_ruangan',
         'kapasitas',
         'deskripsi',
         'tersedia',
     ];
+
+
+    public function gedung()
+    {
+        return $this->belongsTo(Gedung::class, 'gedung_id');
 
     public function peminjamans()
     {

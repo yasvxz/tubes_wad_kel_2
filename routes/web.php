@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\RuanganController;
+
+
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -13,10 +16,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
 Route::resource('users', UserController::class);
+Route::resource('ruangan', RuanganController::class);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [RuanganController::class, 'index']);
 
 Route::middleware('auth')->group(function() {
     Route::get('/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
