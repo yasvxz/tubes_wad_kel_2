@@ -16,6 +16,7 @@ class FeedbackController extends Controller
         return view('feedback.index', compact('feedbacks'));
     }
 
+    
     public function create($peminjaman_id)
     {
         $peminjaman = Peminjaman::findOrFail($peminjaman_id);
