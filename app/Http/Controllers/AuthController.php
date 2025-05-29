@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/dashboard');
+        return redirect('/mahasiswa/peminjaman');
     }
 
     public function logout()

@@ -17,19 +17,23 @@ return new class extends Migration
             // Define foreign key fields first
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('ruangan_id');
-
             $table->time('tanggal_mulai');
             $table->time('tanggal_selesai');
+            $table->time('jam_mulai'); 
+            $table->time('jam_selesai'); 
+        
+
             $table->text('keperluan');
             $table->enum('status', ['disetujui', 'menunggu', 'ditolak'])->default('menunggu');
             $table->text('alasan_penolakan')->nullable();
             $table->timestamp('tanggal_pengajuan')->useCurrent();
             $table->timestamps();
 
-            // Then define foreign keys
+
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('ruangan_id')->references('ruangan_id')->on('ruangans')->onDelete('cascade');
         });
+
     }
 
     /**
