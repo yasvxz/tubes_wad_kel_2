@@ -23,9 +23,23 @@ Route::middleware('auth')->group(function() {
     Route::get('/feedbacks/create', [FeedbackController::class, 'create'])->name('feedbacks.create');
     Route::post('/feedbacks', [FeedbackController::class, 'store'])->name('feedbacks.store');
     Route::get('/feedbacks/{feedback}', [feedbackController::class, 'show'])->name('feedbacks.show');
+
+    
 });
 
 Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/feedbacks', [FeedbackController::class, 'adminIndex'])->name('admin.feedbacks.index');
     Route::post('/admin/feedbacks/{feedback}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
 });
+
+use App\Http\Controllers\PeminjamanController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mahasiswa/peminjaman', [PeminjamanController::class, 'index'])->name('mahasiswa.peminjaman.index');
+    Route::get('/mahasiswa/peminjaman/create', [PeminjamanController::class, 'create'])->name('mahasiswa.peminjaman.create');
+    Route::post('/mahasiswa/peminjaman', [PeminjamanController::class, 'store'])->name('mahasiswa.peminjaman.store');
+    
+});
+
+
+
