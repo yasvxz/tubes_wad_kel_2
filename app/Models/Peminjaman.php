@@ -36,4 +36,8 @@ class Peminjaman extends Model
     }
     protected $table = 'peminjamans';
 
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

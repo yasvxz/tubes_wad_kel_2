@@ -23,4 +23,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
 }

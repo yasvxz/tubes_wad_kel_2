@@ -19,18 +19,13 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
-    Route::get('/feedbacks/create', [FeedbackController::class, 'create'])->name('feedbacks.create');
-    Route::post('/feedbacks', [FeedbackController::class, 'store'])->name('feedbacks.store');
-    Route::get('/feedbacks/{feedback}', [feedbackController::class, 'show'])->name('feedbacks.show');
+    Route::get('/feedback/create/{peminjaman_id}', [FeedbackController::class, 'create'])->name('feedbacks.create');
+    Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedbacks.store');
 
     
 });
 
-Route::middleware(['auth', 'admin'])->group(function() {
-    Route::get('/admin/feedbacks', [FeedbackController::class, 'adminIndex'])->name('admin.feedbacks.index');
-    Route::post('/admin/feedbacks/{feedback}', [FeedbackController::class, 'update'])->name('admin.feedbacks.update');
-});
+Route::get('/admin/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
 
 use App\Http\Controllers\PeminjamanController;
 

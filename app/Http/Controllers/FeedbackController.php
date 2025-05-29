@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -10,23 +11,30 @@ use Illuminate\Support\Facades\Storage;
 class FeedbackController extends Controller
 {
     // User melihat daftar keluhan miliknya
+    
     public function index()
     {
         $complaints = Feedback::where('user_id','peminjaman_id', Auth::id())->get();
+        $feedbacks = Feedback::with(['user', 'peminjaman'])->get();
         return view('feedback.index', compact('feedbacks'));
     }
 
     // Form buat keluhan
     public function create()
+    public function create($peminjaman_id)
     {
         return view('feedbacks.create');
+        $peminjaman = Peminjaman::findOrFail($peminjaman_id);
+        return view('feedbacks.create', compact('peminjaman'));
     }
 
     // Simpan keluhan
+
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|max:255',
+            'peminjaman_id' => 'required|exists:peminjamans,peminjaman_id',
             'keluhan' => 'required',
             'attachment' => 'nullable|file|max:2048'
         ]);
@@ -37,9 +45,11 @@ class FeedbackController extends Controller
         }
 
         Complaint::create([
+        Feedback::create([
             'user_id' => Auth::id(),
             'peminjaman_id' => Auth::id(),
             'title' => $request->title,
+            'judul' => $request->title,
             'keluhan' => $request->description,
             'attachment' => $attachmentPath
         ]);
@@ -47,12 +57,6 @@ class FeedbackController extends Controller
         return redirect()->route('feedbacks.index')->with('success', 'Keluhan berhasil dikirim.');
     }
 
-    // Detail keluhan
-    public function show(Feedback $feedback)
-    {
-        $this->authorize('view', $feedback);
-        return view('feedbacks.show', compact('feedback'));
-    }
 
     // Admin: Daftar semua keluhan
     public function adminIndex()
