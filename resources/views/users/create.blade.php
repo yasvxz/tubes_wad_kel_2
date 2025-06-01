@@ -22,7 +22,7 @@
         </div>
 
         <div class="mb-3">
-            <label>NIM</label>
+            <label>NIM / NIP</label>
             <input type="text" name="nim" class="form-control" value="{{ old('nim') }}">
         </div>
 
