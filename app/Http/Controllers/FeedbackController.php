@@ -25,26 +25,16 @@ class FeedbackController extends Controller
     // Simpan keluhan
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'keluhan' => 'required',
-            'attachment' => 'nullable|file|max:2048'
+        $validated = $request->validate([
+            'peminjaman_id' => 'required|exists:peminjamans,peminjaman_id',
+            'keluhan' => 'required|string'
         ]);
 
-        $attachmentPath = null;
-        if ($request->hasFile('attachment')) {
-            $attachmentPath = $request->file('attachment')->store('feedbacks');
-        }
+        $validated['user_id'] = auth()->id();
+        
+        Feedback::create($validated);
 
-        Complaint::create([
-            'user_id' => Auth::id(),
-            'peminjaman_id' => Auth::id(),
-            'title' => $request->title,
-            'keluhan' => $request->description,
-            'attachment' => $attachmentPath
-        ]);
-
-        return redirect()->route('feedbacks.index')->with('success', 'Keluhan berhasil dikirim.');
+        return redirect()->back()->with('success', 'Terima kasih atas feedback Anda!');
     }
 
     // Detail keluhan
@@ -57,7 +47,7 @@ class FeedbackController extends Controller
     // Admin: Daftar semua keluhan
     public function adminIndex()
     {
-        $complaints = Complaint::all();
-        return view('feedbacks.admin', compact('feedbacks'));
+        $feedbacks = Feedback::with(['user', 'peminjaman.ruangan'])->latest()->get();
+        return view('admin.feedback.index', compact('feedbacks'));
     }
 }
