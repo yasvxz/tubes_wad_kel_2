@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mahasiswa')
 
 @section('content')
 <div class="container">
@@ -38,7 +38,18 @@
                   @if($i.':00' >= $pinjam->jam_mulai && $i.':00' < $pinjam->jam_selesai)
                     <div class="text-white">
                       <small>{{ $pinjam->jam_mulai }}-{{ $pinjam->jam_selesai }}</small><br>
-                      <small><em>{{ $pinjam->status }}</em></small>
+                      @if($pinjam->status === 'menunggu')
+                        <span class="badge bg-warning text-dark">Menunggu</span>
+                      @elseif($pinjam->status === 'disetujui')
+                        <span class="badge bg-success">Disetujui</span>
+                        @if(!$pinjam->feedback)
+                          <button type="button" class="btn btn-sm btn-light mt-1" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ $pinjam->peminjaman_id }}">
+                            Beri Feedback
+                          </button>
+                        @endif
+                      @elseif($pinjam->status === 'ditolak')
+                        <span class="badge bg-danger">Ditolak</span>
+                      @endif
                     </div>
                     @break
                   @endif
@@ -52,5 +63,39 @@
   </table>
 
   <a href="{{ route('mahasiswa.peminjaman.create') }}" class="btn btn-success mt-3">Ajukan Peminjaman</a>
+
+  <!-- Feedback Modals -->
+  @foreach($ruangans as $ruangan)
+    @if(isset($peminjamans[$ruangan->ruangan_id]))
+      @foreach($peminjamans[$ruangan->ruangan_id] as $pinjam)
+        @if($pinjam->status === 'disetujui' && !$pinjam->feedback)
+          <div class="modal fade" id="feedbackModal{{ $pinjam->peminjaman_id }}" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Beri Feedback - {{ $ruangan->nama_ruangan }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ route('feedback.store') }}" method="POST">
+                  @csrf
+                  <div class="modal-body">
+                    <input type="hidden" name="peminjaman_id" value="{{ $pinjam->peminjaman_id }}">
+                    <div class="mb-3">
+                      <label class="form-label">Feedback</label>
+                      <textarea name="keluhan" class="form-control" rows="3" required placeholder="Berikan feedback Anda tentang peminjaman ruangan ini..."></textarea>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Kirim Feedback</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        @endif
+      @endforeach
+    @endif
+  @endforeach
 </div>
 @endsection
