@@ -15,8 +15,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
+
 Route::resource('users', UserController::class);
-Route::resource('ruangan', RuanganController::class);
 
 Route::get('/', [RuanganController::class, 'index']);
 
