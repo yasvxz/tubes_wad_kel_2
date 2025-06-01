@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ruangan_id');
         
             $table->date('tanggal'); 
+            $table->date('tanggal'); 
             $table->time('jam_mulai'); 
             $table->time('jam_selesai'); 
         
@@ -31,6 +32,10 @@ return new class extends Migration
         });
         
 
+
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('ruangan_id')->references('ruangan_id')->on('ruangans')->onDelete('cascade');
+        });
     }
 
     /**
