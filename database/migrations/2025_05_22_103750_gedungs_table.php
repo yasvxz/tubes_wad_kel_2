@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('gedungs', function (Blueprint $table) {
             $table->id('gedung_id');
             $table->string('nama_gedung');
+            $table->string('lokasi')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->integer('kapasitas_total')->default(0);
             $table->timestamps();
         });
 
