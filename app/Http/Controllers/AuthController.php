@@ -29,6 +29,10 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        if ($user->role === 'admin') {
+            return redirect('/admin/peminjaman');
+        }
+
         return redirect('/mahasiswa/peminjaman');
     }
 
