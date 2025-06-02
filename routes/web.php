@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\PeminjamanController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -27,7 +28,6 @@ Route::middleware('auth')->group(function() {
 
 Route::get('/admin/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
 
-use App\Http\Controllers\PeminjamanController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/peminjaman', [PeminjamanController::class, 'index'])->name('mahasiswa.peminjaman.index');
@@ -35,6 +35,3 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mahasiswa/peminjaman', [PeminjamanController::class, 'store'])->name('mahasiswa.peminjaman.store');
     
 });
-
-
-
