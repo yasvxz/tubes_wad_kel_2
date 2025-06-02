@@ -24,8 +24,9 @@ class Ruangan extends Model
     public function gedung()
     {
         return $this->belongsTo(Gedung::class, 'gedung_id');
-
+    }
     public function peminjamans()
+    
     {
         return $this->hasMany(Peminjaman::class, 'ruangan_id');
     }
